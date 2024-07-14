@@ -58,6 +58,24 @@ Verify the Installation and version using this command
 
 terraform -v
 
+Step 8:
+
+Go to the repo and find the terraform folder and use that file based on your need change that files
+
+Use this command for terraform
+
+Initialize the directory:
+
+terraform init
+
+Generate and show the execution plan:
+
+terraform plan
+
+Apply the changes required to reach the desired state of the configuration:
+
+terraform apply
+
 # Deploy Netflix Clone on Cloud using Jenkins - DevSecOps Project!
 
 ### **Phase 1: Initial Setup and Deployment**
