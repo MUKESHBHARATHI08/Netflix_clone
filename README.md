@@ -14,6 +14,49 @@
   <p align="center">Home Page</p>
 </div>
 
+# Before starting the below process use terraform to create the EC2 Instance 
+
+**Step 1: Install the terraform (Ubuntu 22.04):**
+
+Updating the server
+
+sudo apt-get update
+
+Step 2: 
+
+Install the Required Dependencies
+
+sudo apt-get install -y software-properties-common gnupg
+
+Step 3: 
+
+Add the official HashiCorp GPG key to your system:
+
+wget -O- https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+Step 4: 
+
+Add the HashiCorp repository to your APT sources list:
+
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+Step 5: 
+
+After adding the new repository, update the package list again:
+
+sudo apt-get update
+
+Step 6: 
+
+Install Terraform
+
+sudo apt-get install terraform
+
+Step 7: 
+
+Verify the Installation and version using this command
+
+terraform -v
 
 # Deploy Netflix Clone on Cloud using Jenkins - DevSecOps Project!
 
@@ -30,7 +73,7 @@
 - Clone your application's code repository onto the EC2 instance:
     
     ```bash
-    git clone https://github.com/N4si/DevSecOps-Project.git
+    https://github.com/MUKESHBHARATHI08/Netflix_clone.git
     ```
     
 
@@ -51,11 +94,11 @@
     
     ```bash
     docker build -t netflix .
-    docker run -d --name netflix -p 8081:80 netflix:latest
+    docker run -d --name netflix -p 8081:80 mukeshbharathi/netflix:latest
     
     #to delete
     docker stop <containerid>
-    docker rmi -f netflix
+    docker rmi -f mukeshbharathi/netflix:latest
     ```
 
 It will show an error cause you need API key
@@ -197,7 +240,7 @@ pipeline {
         }
         stage('Checkout from Git') {
             steps {
-                git branch: 'main', url: 'https://github.com/N4si/DevSecOps-Project.git'
+                git branch: 'dev', url: 'https://github.com/MUKESHBHARATHI08/Netflix_clone.git'
             }
         }
         stage("Sonarqube Analysis") {
@@ -287,7 +330,7 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/N4si/DevSecOps-Project.git'
+                git branch: 'main', url: 'https://github.com/MUKESHBHARATHI08/Netflix_clone.git'
             }
         }
         stage("Sonarqube Analysis "){
@@ -325,21 +368,21 @@ pipeline{
             steps{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
-                       sh "docker build --build-arg TMDB_V3_API_KEY=<yourapikey> -t netflix ."
-                       sh "docker tag netflix nasi101/netflix:latest "
-                       sh "docker push nasi101/netflix:latest "
+                       sh "docker build --build-arg TMDB_V3_API_KEY=<yourapikey> -t mukeshbharathi/netflix:latest ."
+                       sh "docker tag netflix mukeshbharathi/netflix:latest "
+                       sh "docker push mukeshbharathi/netflix:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image nasi101/netflix:latest > trivyimage.txt" 
+                sh "trivy image mukeshbharathi/netflix:latest > trivyimage.txt" 
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name netflix -p 8081:80 nasi101/netflix:latest'
+                sh 'docker run -d --name netflix -p 8081:80 mukeshbharathi/netflix:latest'
             }
         }
     }
